@@ -4,7 +4,7 @@
   "description": "APP for save favorite links. Using NodeJS and MySQL",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/"
   },
   "keywords": [],
   "author": "",
@@ -22,5 +22,8 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "timeago.js": "^4.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   }
 }
