@@ -5,12 +5,12 @@ const path = require("path");
 const flash = require("connect-flash");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
-const passport = require("passport");
 const { database } = require("./keys");
+const passport = require("passport");
 
 // Initializations
 const app = express();
-require("./lib/passport");
+require("./lib/passport.js");
 
 // Settings
 app.set("port", process.env.PORT || 4000);
@@ -30,10 +30,11 @@ app.set("view engine", ".hbs");
 // Middlewares
 app.use(
   session({
-    secret: "PAss bla",
+    key: "favorite_links_session",
+    secret: "favorite_links_session",
+    store: new MySQLStore(database),
     resave: false,
     saveUninitialized: false,
-    store: new MySQLStore(database),
   })
 );
 app.use(flash());
@@ -47,13 +48,14 @@ app.use(passport.session());
 app.use((req, res, next) => {
   app.locals.success = req.flash("success");
   app.locals.message = req.flash("message");
+  app.locals.user = req.user;
   next();
 });
 
 // Routes
-app.use(require("./routes"));
-app.use(require("./routes/authentication"));
-app.use("/links", require("./routes/links"));
+app.use(require("./routes/index.js"));
+app.use(require("./routes/authentication.js"));
+app.use("/links", require("./routes/links.js"));
 
 // Public
 app.use(express.static(path.join(__dirname, "public")));
